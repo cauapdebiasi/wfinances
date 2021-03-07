@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="pt_BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#7b1fa2" />
+    <link rel="stylesheet" href="./css/materialize.min.css" />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./css/style.css" />
+    <title>WFinances</title>
+  </head>
+
+  <body class="grey lighten-3" style="height: 100vh;">
+    <header>
+      <nav>
+        <div class="nav-wrapper nav purple darken-2">
+          <a href="#" class="brand-logo center">
+            <img
+              class="responsive-img"
+              src="./assets/Logo 64.png"
+              alt="WFinances logo"
+            />
+          </a>
+        </div>
+      </nav>
+    </header>
+    <main class="row">
+      <div class="col s12 m6 offset-m3 l6 offset-l3">
+        <h6 class="black-text saldo"><strong>SALDO ATUAL</strong></h6>
+        <h4 class="purple-text darken-2 saldo-value" id="saldo">
+          <strong>R$ 0.00</strong>
+        </h4>
+
+        <div class="row">
+          <div class="col s6">
+            <div class="card center-align green darken-2 hoverable" onclick="inc_exp_to_html(false);">
+              <div class="card-content white-text">
+                <span class="card-title"><strong>Receita</strong></span>
+                <p id="receita"><strong>R$ 0.00</strong></p>
+              </div>
+            </div>
+          </div>
+          <div class="col s6">
+            <div class="card center-align red darken-2 hoverable" onclick="inc_exp_to_html(true);">
+              <div class="card-content white-text">
+                <span class="card-title"><strong>Despesas</strong></span>
+                <p id="despesas"><strong>R$ 0.00</strong></p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <h5 class="black-text"><strong>Transações</strong></h5>
+        <div class="divider"></div>
+
+        <div class="row">
+          <div
+            class="col s12"
+            id="transactions-container"
+            style="
+              height: 159px !important;
+              overflow-y: scroll;
+              overflow-x: hidden;
+            "
+          ></div>
+        </div>
+        <a
+          id="floating-plus-button"
+          class="modal-trigger hoverable btn-floating btn-large waves-effect waves-light purple darken-2 right"
+          data-target="add-transaction"
+          onclick="open_add_transaction()"
+          ><i class="material-icons right">add</i>Adicionar transação</a
+        >
+      </div>
+      <!-- Add transaction modal -->
+      <div id="add-transaction" class="modal">
+        <div class="modal-content">
+          <h4>Adicionar transação</h4>
+          <div class="row">
+            <div class="input-field col s12 m6 purple-text darken-2">
+              <i class="material-icons prefix purple-text darken-2">edit</i>
+              <input
+                autocomplete="off"
+                id="transaction_name"
+                type="text"
+                class="purple-text"
+                required
+              />
+              <label for="transaction_name" class="purple-text darken-2"
+                >Nome da Transação</label
+              >
+            </div>
+            <div class="input-field col s12 m6 purple-text darken-2">
+              <i class="material-icons prefix purple-text darken-2"
+                >attach_money</i
+              >
+              <input
+                autocomplete="off"
+                id="transaction_value"
+                type="number"
+                class="purple-text"
+                required
+              />
+              <label for="transaction_value" class="purple-text darken-2"
+                >Valor</label
+              >
+            </div>
+          </div>
+          <div class="switch center">
+            <label>
+              Receita
+              <input id="transaction-type-input" type="checkbox" />
+              <span class="lever"></span>
+              Despesa
+            </label>
+          </div>
+          <div class="modal-footer">
+            <a
+              id="transaction-modal-add-button"
+              href="#modal_id"
+              class="modal-close waves-effect waves-purple btn-flat purple-text darken-2"
+              >Adicionar</a
+            >
+          </div>
+        </div>
+      </div>
+      <!-- Edit card modal -->
+      <div id="edit-card-template">
+        <div id="edit-transaction-${transaction.id}" class="modal">
+          <div class="modal-content">
+            <h4>Editar transação</h4>
+            <div class="row">
+              <div class="collection">
+                <a class="collection-item col s12 m6 black-text"
+                  ><h6>
+                    Nome:
+                    <span class="purple-text darken-2"
+                      >${transaction.name}</span
+                    >
+                  </h6></a
+                >
+                <a class="collection-item col s12 m6 black-text"
+                  ><h6>
+                    Valor:
+                    <span class="purple-text darken-2"
+                      >${currency.format(transaction.value)}</span
+                    >
+                  </h6></a
+                >
+                <a class="collection-item col s12 black-text"
+                  ><h6>
+                    Data de criação:
+                    <span class="purple-text darken-2"
+                      >${transaction.time.day}/${transaction.time.month}/${transaction.time.year}
+                      às ${transaction.time.hours}</span
+                    >
+                  </h6></a
+                >
+              </div>
+            </div>
+            <div class="row">
+              <div class="input-field col s12 m6 purple-text darken-2">
+                <i class="material-icons prefix purple-text darken-2">edit</i>
+                <input
+                  autocomplete="off"
+                  id="transaction_name_change-${transaction.id}"
+                  type="text"
+                  class="purple-text"
+                  required
+                />
+                <label
+                  for="transaction_name_change-${transaction.id}"
+                  class="purple-text darken-2"
+                  >Editar nome</label
+                >
+              </div>
+              <div class="input-field col s12 m6 purple-text darken-2">
+                <i class="material-icons prefix purple-text darken-2"
+                  >attach_money</i
+                >
+                <input
+                  autocomplete="off"
+                  id="transaction_value_change-${transaction.id}"
+                  type="number"
+                  class="purple-text"
+                  required
+                />
+                <label
+                  for="transaction_value_change-${transaction.id}"
+                  class="purple-text darken-2"
+                  >Editar valor</label
+                >
+              </div>
+            </div>
+            <div class="switch center">
+              <label>
+                Receita
+                <input id="transaction-type-change-${transaction.id}" type="checkbox" />
+                <span class="lever"></span>
+                Despesa
+              </label>
+            </div>
+            <div class="modal-footer">
+              <a
+                id="transaction-modal-edit-button"
+                href="#"
+                class="modal-close waves-effect waves-purple btn-flat purple-text darken-2"
+                onclick="wfinances.remove_transaction(${transaction.id});"
+                >Remover</a
+              >
+              <a
+                id="transaction-modal-edit-button"
+                href="#"
+                class="modal-close waves-effect waves-purple btn-flat purple-text darken-2"
+                onclick="wfinances.set(${transaction.id})"
+                >Salvar</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Expenses and income modal -->
+      <div id="expenses-income-modal" class="modal">
+        <div class="modal-content">
+          <h4 id="exp-inc-title"></h4>
+          <div class="row">
+            <div
+            class="col s12"
+            id="expenses-income-container"
+            style="
+              max-height: 226px !important;
+              overflow-y: scroll;
+              overflow-x: hidden;
+            "
+          ></div>
+          </div>
+          <div class="modal-footer">
+            <a
+              id="expenses-income-modal-close-button"
+              href="#modal_id"
+              class="modal-close waves-effect waves-purple btn-flat purple-text darken-2"
+              >Sair</a
+            >
+          </div>
+        </div>
+      </div>
+      <div id="generated-edit-card"></div>
+    </main>
+    <script src="./js/materialize.min.js"></script>
+    <script src="./js/localStorage.js"></script>
+    <script src="./js/wfinances.js"></script>
+    <script src="./js/app.js"></script>
+  </body>
+</html>

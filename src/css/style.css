@@ -1,0 +1,77 @@
+/* *{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+} */
+header {
+  height: 15vh;
+}
+main {
+  height: 85vh;
+}
+blockquote {
+  height: 25px;
+  display: flex;
+  justify-content: space-between;
+  padding-right: 1.5rem;
+  margin: 0 0;
+}
+.saldo {
+  margin-bottom: 0;
+}
+.saldo-value {
+  margin-top: 0;
+}
+.income {
+  border-right: 8px solid green !important;
+  border-radius: 5px;
+}
+.expense {
+  border-right: 8px solid red !important;
+  border-radius: 5px;
+}
+.card .card-content {
+  padding: 8px;
+}
+.card .card-title {
+  font-size: 1.6rem;
+}
+.card p {
+  font-size: 1.6rem;
+}
+.card .transacoes-content {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+.card-wrapper {
+  display: flex;
+  align-items: center;
+}
+#floating-plus-button {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+}
+.switch label input[type="checkbox"]:checked + .lever {
+  background-color: #ba68c8;
+}
+
+.switch label input[type="checkbox"]:checked + .lever:after {
+  background-color: #8e24aa;
+}
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: darkgrey;
+}
+::-webkit-scrollbar-thumb:hover {
+  background-color: rgb(66, 66, 66);
+}
+
