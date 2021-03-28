@@ -27,42 +27,27 @@ const expenses_income_transaction_container = $(
 const expenses_income_title = $("exp-inc-title");
 
 /*These functions are used to open the Materialize modals*/
-const add_transaction_modal = function () {
-  const add_trans_modal = $("add-transaction");
-  const options = {
-    opacity: 0.5,
-    startingTop: "50%",
-    endingTop: "15%",
-  };
-  var add_transaction_modal = M.Modal.init(add_trans_modal, options);
-  return add_transaction_modal;
-};
+function create_modal(name, options){
+  const modal_el = $(name);
+  if (options){
+    const modal_inst = M.Modal.init(modal_el, options);
+    return modal_inst;
+  } else {
+    const modal_inst = M.Modal.init(modal_el);
+    return modal_inst;
+  }
+}
+
+const add_transaction_modal = create_modal("add-transaction");
+const edit_transaction_modal = id => create_modal(`edit-transaction-${id}`);
+const income_expenses_modal = create_modal("expenses-income-modal");
+
 function open_add_transaction() {
   add_transaction_modal().open();
 }
-const edit_transaction_modal = function (id) {
-  const edit_trans_modal = $(`edit-transaction-${id}`);
-  const options = {
-    opacity: 0.5,
-    startingTop: "50%",
-    endingTop: "5%",
-  };
-  var edit_transaction_modal = M.Modal.init(edit_trans_modal, options);
-  return edit_transaction_modal;
-};
 function open_edit_transaction(id) {
   edit_transaction_modal(id).open();
 }
-const income_expenses_modal = function () {
-  const income_expenses_el = $('expenses-income-modal');
-  const options = {
-    opacity: 0.5,
-    startingTop: "50%",
-    endingTop: "5%",
-  };
-  var income_expenses_modal = M.Modal.init(income_expenses_el, options);
-  return income_expenses_modal;
-};
 function open_income_expenses() {
   income_expenses_modal().open();
 }
@@ -102,6 +87,7 @@ function load_card_info(transaction, card_template) {
   let template = card_template.innerHTML;
   return eval("`" + template + "`");
 }
+/* This function returns all the incomes or expenses */
 function filter_exp_inc(isExpense){
   if (isExpense){
       result = wfinances.transactions.filter(transaction => transaction.type == "expense")
@@ -111,25 +97,13 @@ function filter_exp_inc(isExpense){
     return result;
   }
 }
-/*This function returns the complete date formatted with only the essential parts */
-function date_formatter() {
-  const now = new Date();
-  const dateToFormat = now.toString();
-  let dateParts = dateToFormat.split(" ");
-  let month = now.getMonth();
-  let formattedDate = {
-    year: dateParts[3],
-    month: month + 1,
-    day: dateParts[2],
-    hours: dateParts[4],
-  };
-  return formattedDate;
-}
+
 /*This function gets the value of the inputs of the modal and calls the function to add the transaction to the main app*/
 function create_transaction() {
   const transaction_name = transaction_name_input.value;
   const transaction_value = Number(transaction_value_input.value);
   const transaction_type = transaction_type_input.checked;
+  /* Verifying if the inputs are fulfilled */
   if (
     transaction_name == "" ||
     isNaN(transaction_value) ||
