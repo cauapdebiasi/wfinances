@@ -43,13 +43,13 @@ const edit_transaction_modal = id => create_modal(`edit-transaction-${id}`);
 const income_expenses_modal = create_modal("expenses-income-modal");
 
 function open_add_transaction() {
-  add_transaction_modal().open();
+  add_transaction_modal.open();
 }
 function open_edit_transaction(id) {
   edit_transaction_modal(id).open();
 }
 function open_income_expenses() {
-  income_expenses_modal().open();
+  income_expenses_modal.open();
 }
 /*This function creates a HTML card based on the information given*/
 function add_card_to_html({ id, name, type, value }, container) {
